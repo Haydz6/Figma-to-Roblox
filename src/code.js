@@ -704,6 +704,12 @@ const ElementTypes = {
             }
         }
 
+        if (Element.effects[0] && Element.effects[0].type === "DROP_SHADOW"){
+            const DropShadow = Element.effects[0]
+            const Color = DropShadow.color
+            Properties.Dropshadow = {color: {r: Color.r, g: Color.g, b: Color.b, a: Color.a}, offset: {x: DropShadow.offset.x, y: DropShadow.offset.y}}
+        }
+
         if (PropertyTypes["exportSettings"](Element, Properties) === false) {
             for (const Property in Element) {
                 if (Property in PropertyTypes) {
@@ -1067,6 +1073,11 @@ function CreateRobloxElement(Properties, ZIndex) { // Creates the roblox xml for
     // End of properties
 
     ExtendXML("</Properties>");
+
+    if (Properties.Dropshadow) {
+        console.log("yep dropshadow")
+        ExtendXML(`<Item class="StringValue" referent="RBX0"><Properties> <string name="Name">Dropshadow</string> <string name="Value">${JSON.stringify(Properties.Dropshadow)}</string> </Properties></Item>`)
+    }
 
     // Add children
     if (Properties.Children !== undefined && Properties.Children.length > 0 && Properties.NoChildren === undefined) {
